@@ -295,6 +295,7 @@ namespace Noots
             };
             btnCreatAcountUp.Click += btnCreatAcountUp_Click;
             this.Controls.Add(btnCreatAcountUp);
+            string lblresult = "uvjk";
         }
 
     }
