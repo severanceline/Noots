@@ -98,8 +98,12 @@ namespace Noots
                 catch
                 {
                     MessageBox.Show("Not connected");
+<<<<<<< Updated upstream
                     string sa = "hufjh";
                     string a1 = "blue";
+=======
+                    string a1 = "red";
+>>>>>>> Stashed changes
                 }
             }
         }
