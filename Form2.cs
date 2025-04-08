@@ -100,6 +100,7 @@ namespace Noots
                     MessageBox.Show("Not connected");
                     string sa = "hufjh";
                     string a1 = "blue";
+                    string a2 = "bag";
                 }
             }
         }
