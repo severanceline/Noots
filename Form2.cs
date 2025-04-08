@@ -98,7 +98,7 @@ namespace Noots
                 catch
                 {
                     MessageBox.Show("Not connected");
-                    string sa = "hufjh";
+                    
                 }
             }
         }
