@@ -30,6 +30,7 @@
         {
             this.btnLS = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnLS
@@ -52,11 +53,22 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // btnAdd
+            // 
+            this.btnAdd.Location = new System.Drawing.Point(660, 36);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(41, 31);
+            this.btnAdd.TabIndex = 2;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1490, 698);
+            this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnLS);
             this.Name = "Form2";
@@ -70,5 +82,6 @@
 
         private System.Windows.Forms.Button btnLS;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnAdd;
     }
 }
