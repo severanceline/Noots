@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Noots;
+using Noots.Security;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -9,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Noots
 {
@@ -23,10 +27,18 @@ namespace Noots
         private Button btnAddText;
         private Button btnAddImage;
         private Button btnAddFile;
+        private TextBox txtUserInput;
+        private UserSession session;
+
+        public Form2(UserSession session)
+        {
+            InitializeComponent();
+            this.session = session;
+        }
 
         public Form2()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void Form2_Load(object sender, EventArgs e)
@@ -76,7 +88,7 @@ namespace Noots
             btnAddFile.Text = "Add File";
             btnAddFile.Location = new Point(btnAdd.Left, btnAddImage.Bottom + 10);
             btnAddFile.Size = new Size(100, 30);
-            btnAddFile.Click += BtnAddFile_Click;
+            btnAddFile.Click += BtnAdd_Click;
             this.Controls.Add(btnAddFile);
         }
 
@@ -86,7 +98,7 @@ namespace Noots
             Controls.Remove(btnAddImage);
             Controls.Remove(btnAddFile);
 
-            TextBox txtUserInput = new TextBox();
+            txtUserInput = new TextBox();
             txtUserInput.Location = new Point(btnAdd.Left, btnAdd.Bottom + 10); 
             txtUserInput.Size = new Size(500, 300); 
             txtUserInput.Multiline = true; 
@@ -97,6 +109,7 @@ namespace Noots
             BtnAdd.Location = new Point(txtUserInput.Left, txtUserInput.Bottom + 10);
             BtnAdd.Size = new Size(100, 30);
             BtnAdd.Text = "Add";
+            BtnAdd.Click += BtnAdd_Click;
             this.Controls.Add(BtnAdd);
         }
 
@@ -105,9 +118,44 @@ namespace Noots
             throw new NotImplementedException();
         }
 
-        private void BtnAddFile_Click(object sender, EventArgs e)
+        private void BtnAdd_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(txtUserInput.Text))
+            {
+                MessageBox.Show("Please enter some text.");
+                return;
+            }
+            string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
+            string query = "INSERT INTO [Datas] ([UserId],[DataCategory],[TextContent]) "
+            + "VALUES ( @userId , 1 , @TextContent )";
+            MessageBox.Show(txtUserInput.Text);
+            MessageBox.Show(session.UserId);
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", session.UserId);
+                        command.Parameters.AddWithValue("@TextContent", txtUserInput.Text);
+                        int rowsAffected = command.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Note added successfully.");
+                            this.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to add note.");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
         }
     }
 }

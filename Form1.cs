@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Noots
 {
@@ -151,7 +152,7 @@ namespace Noots
             string FirstNameUp = txtFirstNameUp.Text;
             string LastNameUp = txtLastNameUp.Text;
             string EmailUp = txtEmailUp.Text;
-            string HashedPasswordUp = SecurityHelper.HashPassword(txtPasswordUp.Text);
+            string HashedPasswordUp = SecurityHelper.HashPassword(txtPasswordUp.Text.Trim());
             string DateOfBirthUp = txtDateOfBirthUp.Text;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -193,31 +194,41 @@ namespace Noots
             {
                 MessageBox.Show("Please make sure all fields are properly initialized.");
                 return;
-            }
+            };
             string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-            string query = "SELECT COUNT(*) FROM Users WHERE [User Name]=@UsernameLI AND [Password]=@PasswordLI;";
+            string query = "SELECT [Id], [User Name], [Email] "
+                + "FROM [NOOTS].[dbo].[Users]  WHERE [User Name] = @UsernameLI AND [Password] = @PasswordLI";
             string UsernameLI = txtusernameLI.Text;
-            string HashedPasswordLI = SecurityHelper.HashPassword(txtpasswordLI.Text);
-
+            string HashedPasswordLI = SecurityHelper.HashPassword(txtpasswordLI.Text.Trim());
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
+
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@UserNameLI", UsernameLI);
+                        command.Parameters.AddWithValue("@UsernameLI", UsernameLI);
                         command.Parameters.AddWithValue("@PasswordLI", HashedPasswordLI);
-
-                        int userCount = (int)command.ExecuteScalar();
-                        if (userCount > 0)
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            MessageBox.Show("Login Successful!");
-                            this.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Invalid username or password.");
+                            if (reader.Read())
+                            {
+                                string userIdAsString = reader["Id"].ToString();
+                                UserSession session = new UserSession
+                                {
+                                    UserId = userIdAsString,
+                                    UserName = reader.GetString(1),
+                                    Email = reader.GetString(2)
+                                };
+                                Form2 myForm2 = new Form2(session);
+                                this.Hide();
+                                MessageBox.Show("Logged in successfully");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Invalid username or password.");
+                            }
                         }
                     }
                 }
