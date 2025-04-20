@@ -28,13 +28,6 @@ namespace Noots
         private Button btnAddImage;
         private Button btnAddFile;
         private TextBox txtUserInput;
-        private UserSession session;
-
-        public Form2(UserSession session)
-        {
-            InitializeComponent();
-            this.session = session;
-        }
 
         public Form2()
         {
@@ -128,8 +121,6 @@ namespace Noots
             string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
             string query = "INSERT INTO [Datas] ([UserId],[DataCategory],[TextContent]) "
             + "VALUES ( @userId , 1 , @TextContent )";
-            MessageBox.Show(txtUserInput.Text);
-            MessageBox.Show(session.UserId);
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
@@ -137,13 +128,12 @@ namespace Noots
                     connection.Open();
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@UserId", session.UserId);
+                        command.Parameters.AddWithValue("@UserId", Session.CurrentUser.userId);
                         command.Parameters.AddWithValue("@TextContent", txtUserInput.Text);
                         int rowsAffected = command.ExecuteNonQuery();
                         if (rowsAffected > 0)
                         {
                             MessageBox.Show("Note added successfully.");
-                            this.Close();
                         }
                         else
                         {

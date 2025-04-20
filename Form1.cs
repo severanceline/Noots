@@ -173,7 +173,7 @@ namespace Noots
                         if (rowsAffected > 0)
                         {
                             MessageBox.Show("Account Created Successfully!");
-                            this.Close();
+                            ClearAllControls(this);
                         }
                         else
                         {
@@ -186,6 +186,11 @@ namespace Noots
                     MessageBox.Show($"Error: {ex.Message}");
                 }
             }
+        }
+
+        private void ClearAllControls(Form1 form1)
+        {
+            throw new NotImplementedException();
         }
 
         private void btnloginLI_Click(object sender, EventArgs e)
@@ -214,14 +219,9 @@ namespace Noots
                         {
                             if (reader.Read())
                             {
-                                string userIdAsString = reader["Id"].ToString();
-                                UserSession session = new UserSession
-                                {
-                                    UserId = userIdAsString,
-                                    UserName = reader.GetString(1),
-                                    Email = reader.GetString(2)
-                                };
-                                Form2 myForm2 = new Form2(session);
+                                Session.CurrentUser.userId = reader.GetGuid(0);
+                                Session.CurrentUser.UserName = reader.GetString(1);
+                                Session.CurrentUser.Email = reader.GetString(2);
                                 this.Hide();
                                 MessageBox.Show("Logged in successfully");
                             }
