@@ -18,12 +18,6 @@ namespace Noots
 {
     public partial class Form2: Form
     {
-        private TextBox txtFirstNameUp;
-        private TextBox txtLastNameUp;
-        private TextBox txtUserNameUp;
-        private TextBox txtEmailUp;
-        private TextBox txtPasswordUp;
-        private TextBox txtDateOfBirthUp;
         private Button btnAddText;
         private Button btnAddImage;
         private Button btnAddFile;
