@@ -5,6 +5,10 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
 using static System.Collections.Specialized.BitVector32;
+using System.Text.RegularExpressions;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Noots
 {
@@ -19,6 +23,7 @@ namespace Noots
             panelSignUp.SendToBack();
             panelSignIn.Visible = true;
             panelSignUp.Visible = false;
+            listBoxErrors.Visible = false;  
         }
 
         private void btnloginLI_Click(object sender, EventArgs e)
@@ -83,51 +88,158 @@ namespace Noots
 
         private void btnCreatAcountUp_Click_1(object sender, EventArgs e)
         {
-            if (txtUserNameUp == null || txtFirstNameUp == null || txtLastNameUp == null || txtEmailUp1 == null || txtPasswordUp == null || txtDateOfBirthUp == null)
+            listBoxErrors.Items.Clear();
+            listBoxErrors.Visible = false;
+            bool hasError = false;
+
+            if (string.IsNullOrWhiteSpace(txtFirstNameUp.Text) && string.IsNullOrWhiteSpace(txtLastNameUp.Text) &&
+                string.IsNullOrWhiteSpace(txtUserNameUp.Text) && string.IsNullOrWhiteSpace(txtPasswordUp.Text) &&
+                string.IsNullOrWhiteSpace(txtEmailUp1.Text)
+                && dateTimePickerBirthDate.Value.Date == DateTime.Today.Date)
             {
-                MessageBox.Show("Please make sure all fields are properly initialized.");
+                listBoxErrors.Items.Add("All fields are required. Please fill them out.");
+                listBoxErrors.Visible = true;
                 return;
             }
-            string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-            string query = "INSERT INTO Users([User Name],[First Name],[Last Name],[Email],[Password],[Date Of Birth]) VALUES (@UserName,@FirstName,@LastName,@Email,@Password,@DateOfBirth);";
-            string UserNameUp = txtUserNameUp.Text;
-            string FirstNameUp = txtFirstNameUp.Text;
-            string LastNameUp = txtLastNameUp.Text;
-            string EmailUp = txtEmailUp1.Text;
-            string HashedPasswordUp = SecurityHelper.HashPassword(txtPasswordUp.Text.Trim());
-            string DateOfBirthUp = txtDateOfBirthUp.Text;
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            //First Name
+            if (txtFirstNameUp == null)
             {
-                try
-                {
-                    connection.Open();
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@UserName", UserNameUp);
-                        command.Parameters.AddWithValue("@FirstName", FirstNameUp);
-                        command.Parameters.AddWithValue("@LastName", LastNameUp);
-                        command.Parameters.AddWithValue("@Email", EmailUp);
-                        command.Parameters.AddWithValue("@Password", HashedPasswordUp);
-                        command.Parameters.AddWithValue("@DateOfBirth", DateOfBirthUp);
+                listBoxErrors.Items.Add("First name field cannot be empty.");
+                hasError = true;
+            }
+            if (!Regex.IsMatch(txtFirstNameUp.Text, @"^[a-zA-Z]+$"))
+            {
+                listBoxErrors.Items.Add("Only English letters are allowed for first name.");
+                hasError = true;
+            }
+            //Last name
+            if (txtLastNameUp == null)
+            {
+                listBoxErrors.Items.Add("Last name field cannot be empty.");
+                hasError = true;
+            }
+            if (!Regex.IsMatch(txtLastNameUp.Text, @"^[a-zA-Z]+$"))
+            {
+                listBoxErrors.Items.Add("Only English letters are allowed for last name.");
+                hasError = true;
+            }
+            //Username
+            if (txtUserNameUp == null)
+            {
+                listBoxErrors.Items.Add("Username field cannot be empty.");
+                hasError = true;
+            }
+            if (!Regex.IsMatch(txtUserNameUp.Text, @"^[a-zA-Z0-9._-]+$"))
+            {
+                listBoxErrors.Items.Add("Username can only contain English letters, numbers, dots, hyphens, and underscores.");
+                hasError = true;
+            }
+            if (txtUserNameUp.Text.Length < 5)
+            {
+                listBoxErrors.Items.Add("Username must be at least 5 characters.");
+                hasError = true;
+            }
+            if (txtUserNameUp.Text.Length > 20)
+            {
+                listBoxErrors.Items.Add("Username must be a maximum of 20 characters.");
+                hasError = true;
+            }
+            //Password
+            if (txtPasswordUp.Text == null)
+            {
+                listBoxErrors.Items.Add("Password field cannot be empty.");
+                hasError = true;
+            }
+            if (!Regex.IsMatch(txtPasswordUp.Text, @"^[\x20-\x7E]+$"))
+            {
+                listBoxErrors.Items.Add("Password can only contain English letters, numbers,  and standard \n keyboard characters.");
+                hasError = true;
+            }
+            if (!(txtPasswordUp.Text.Any(char.IsLower) && txtPasswordUp.Text.Any(char.IsUpper)))
+            {
+                listBoxErrors.Items.Add("Password must contain both uppercase and lowercase letters.");
+                hasError = true;
+            }
+            if (!Regex.IsMatch(txtPasswordUp.Text, @"\d"))
+            {
+                listBoxErrors.Items.Add("Password must contain at least one number.");
+                hasError = true;
+            }
+            if (txtPasswordUp.Text.Length < 8)
+            {
+                listBoxErrors.Items.Add("Password must be at least 8 characters.");
+                hasError = true;
+            }
+            if (txtPasswordUp.Text.Length > 20)
+            {
+                listBoxErrors.Items.Add("Password must be a maximum of 20 characters.");
+                hasError = true;
+            }
+            //Email
+            if (txtEmailUp1.Text == null)
+            {
+                listBoxErrors.Items.Add("Email field cannot be empty.");
+                hasError = true;
+            }
+            if (!Regex.IsMatch(txtEmailUp1.Text, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            {
+                listBoxErrors.Items.Add("Please enter a valid email address.");
+                hasError = true;
+            }
+            //Date of Birth
+            if (dateTimePickerBirthDate.Value.Date == DateTime.Today.Date)
+            {
+                listBoxErrors.Items.Add("Please select a valid date.");
+                hasError = true;
+            }
+            if (hasError)
+            {
+                listBoxErrors.Visible = true;
+            }
+            if (!hasError)
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
+                string query = "INSERT INTO Users([User Name],[First Name],[Last Name],[Email],[Password],[Date Of Birth]) VALUES (@UserName,@FirstName,@LastName,@Email,@Password,@DateOfBirth);";
+                string UserNameUp = txtUserNameUp.Text;
+                string FirstNameUp = txtFirstNameUp.Text;
+                string LastNameUp = txtLastNameUp.Text;
+                string EmailUp = txtEmailUp1.Text;
+                string HashedPasswordUp = SecurityHelper.HashPassword(txtPasswordUp.Text.Trim());
+                DateTime selectedDate = dateTimePickerBirthDate.Value;
+                string DateOfBirthUp = selectedDate.ToString("yyyy-MM-dd");
 
-                        int rowsAffected = command.ExecuteNonQuery();
-                        if (rowsAffected > 0)
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    try
+                    {
+                        connection.Open();
+                        using (SqlCommand command = new SqlCommand(query, connection))
                         {
-                            MessageBox.Show("Account Created Successfully!");
-                            panelSignUp.SendToBack();
-                            panelSignIn.Visible = true;
-                            panelSignUp.Visible = false;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Failed to Create Account.");
+                            command.Parameters.AddWithValue("@UserName", UserNameUp);
+                            command.Parameters.AddWithValue("@FirstName", FirstNameUp);
+                            command.Parameters.AddWithValue("@LastName", LastNameUp);
+                            command.Parameters.AddWithValue("@Email", EmailUp);
+                            command.Parameters.AddWithValue("@Password", HashedPasswordUp);
+                            command.Parameters.AddWithValue("@DateOfBirth", DateOfBirthUp);
+
+                            int rowsAffected = command.ExecuteNonQuery();
+                            if (rowsAffected > 0)
+                            {
+                                MessageBox.Show("Account Created Successfully!");
+                                panelSignUp.SendToBack();
+                                panelSignIn.Visible = true;
+                                panelSignUp.Visible = false;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Failed to Create Account.");
+                            }
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error: {ex.Message}");
+                    }
                 }
             }
         }

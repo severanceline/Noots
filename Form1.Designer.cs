@@ -35,12 +35,10 @@ namespace Noots
             this.txtusernameLI = new System.Windows.Forms.TextBox();
             this.txtpasswordLI = new System.Windows.Forms.TextBox();
             this.panelSignIn = new System.Windows.Forms.Panel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.btncreateacountLI = new System.Windows.Forms.Button();
-            this.lblSignInLI = new System.Windows.Forms.Label();
             this.panelSignUp = new System.Windows.Forms.Panel();
+            this.dateTimePickerBirthDate = new System.Windows.Forms.DateTimePicker();
+            this.listBoxErrors = new System.Windows.Forms.ListBox();
             this.lblDateOfBirth = new System.Windows.Forms.Label();
-            this.txtDateOfBirthUp = new System.Windows.Forms.TextBox();
             this.txtPasswordUp = new System.Windows.Forms.TextBox();
             this.txtEmailUp1 = new System.Windows.Forms.TextBox();
             this.txtUserNameUp = new System.Windows.Forms.TextBox();
@@ -54,13 +52,16 @@ namespace Noots
             this.lblSignUpUp = new System.Windows.Forms.Label();
             this.btnBackToSignInUp = new System.Windows.Forms.Button();
             this.btnCreatAcountUp = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btncreateacountLI = new System.Windows.Forms.Button();
+            this.lblSignInLI = new System.Windows.Forms.Label();
             this.panelSignIn.SuspendLayout();
             this.panelSignUp.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnloginLI
             // 
-            this.btnloginLI.Location = new System.Drawing.Point(38, 265);
+            this.btnloginLI.Location = new System.Drawing.Point(5, 370);
             this.btnloginLI.Name = "btnloginLI";
             this.btnloginLI.Size = new System.Drawing.Size(84, 23);
             this.btnloginLI.TabIndex = 0;
@@ -71,7 +72,7 @@ namespace Noots
             // lblusernameLI
             // 
             this.lblusernameLI.AutoSize = true;
-            this.lblusernameLI.Location = new System.Drawing.Point(35, 40);
+            this.lblusernameLI.Location = new System.Drawing.Point(31, 40);
             this.lblusernameLI.Name = "lblusernameLI";
             this.lblusernameLI.Size = new System.Drawing.Size(58, 13);
             this.lblusernameLI.TabIndex = 2;
@@ -81,7 +82,7 @@ namespace Noots
             // lblpasswordLI
             // 
             this.lblpasswordLI.AutoSize = true;
-            this.lblpasswordLI.Location = new System.Drawing.Point(35, 77);
+            this.lblpasswordLI.Location = new System.Drawing.Point(31, 74);
             this.lblpasswordLI.Name = "lblpasswordLI";
             this.lblpasswordLI.Size = new System.Drawing.Size(53, 13);
             this.lblpasswordLI.TabIndex = 3;
@@ -90,14 +91,14 @@ namespace Noots
             // 
             // txtusernameLI
             // 
-            this.txtusernameLI.Location = new System.Drawing.Point(106, 37);
+            this.txtusernameLI.Location = new System.Drawing.Point(189, 40);
             this.txtusernameLI.Name = "txtusernameLI";
             this.txtusernameLI.Size = new System.Drawing.Size(137, 20);
             this.txtusernameLI.TabIndex = 4;
             // 
             // txtpasswordLI
             // 
-            this.txtpasswordLI.Location = new System.Drawing.Point(106, 70);
+            this.txtpasswordLI.Location = new System.Drawing.Point(189, 74);
             this.txtpasswordLI.Name = "txtpasswordLI";
             this.txtpasswordLI.Size = new System.Drawing.Size(137, 20);
             this.txtpasswordLI.TabIndex = 5;
@@ -112,41 +113,16 @@ namespace Noots
             this.panelSignIn.Controls.Add(this.txtpasswordLI);
             this.panelSignIn.Controls.Add(this.lblusernameLI);
             this.panelSignIn.Controls.Add(this.lblpasswordLI);
-            this.panelSignIn.Location = new System.Drawing.Point(3, 3);
+            this.panelSignIn.Location = new System.Drawing.Point(2, -2);
             this.panelSignIn.Name = "panelSignIn";
-            this.panelSignIn.Size = new System.Drawing.Size(281, 336);
+            this.panelSignIn.Size = new System.Drawing.Size(349, 397);
             this.panelSignIn.TabIndex = 6;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(-54, -19);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(137, 20);
-            this.textBox1.TabIndex = 23;
-            // 
-            // btncreateacountLI
-            // 
-            this.btncreateacountLI.Location = new System.Drawing.Point(158, 265);
-            this.btncreateacountLI.Name = "btncreateacountLI";
-            this.btncreateacountLI.Size = new System.Drawing.Size(85, 23);
-            this.btncreateacountLI.TabIndex = 12;
-            this.btncreateacountLI.Text = "Create acount";
-            this.btncreateacountLI.UseVisualStyleBackColor = true;
-            this.btncreateacountLI.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // lblSignInLI
-            // 
-            this.lblSignInLI.AutoSize = true;
-            this.lblSignInLI.Location = new System.Drawing.Point(116, 8);
-            this.lblSignInLI.Name = "lblSignInLI";
-            this.lblSignInLI.Size = new System.Drawing.Size(39, 13);
-            this.lblSignInLI.TabIndex = 10;
-            this.lblSignInLI.Text = "Sign in";
             // 
             // panelSignUp
             // 
+            this.panelSignUp.Controls.Add(this.dateTimePickerBirthDate);
+            this.panelSignUp.Controls.Add(this.listBoxErrors);
             this.panelSignUp.Controls.Add(this.lblDateOfBirth);
-            this.panelSignUp.Controls.Add(this.txtDateOfBirthUp);
             this.panelSignUp.Controls.Add(this.txtPasswordUp);
             this.panelSignUp.Controls.Add(this.txtEmailUp1);
             this.panelSignUp.Controls.Add(this.txtUserNameUp);
@@ -160,59 +136,67 @@ namespace Noots
             this.panelSignUp.Controls.Add(this.lblSignUpUp);
             this.panelSignUp.Controls.Add(this.btnBackToSignInUp);
             this.panelSignUp.Controls.Add(this.btnCreatAcountUp);
-            this.panelSignUp.Location = new System.Drawing.Point(3, 3);
+            this.panelSignUp.Location = new System.Drawing.Point(2, 4);
             this.panelSignUp.Name = "panelSignUp";
-            this.panelSignUp.Size = new System.Drawing.Size(281, 336);
+            this.panelSignUp.Size = new System.Drawing.Size(346, 394);
             this.panelSignUp.TabIndex = 0;
             this.panelSignUp.Paint += new System.Windows.Forms.PaintEventHandler(this.panelSignUp_Paint);
+            // 
+            // dateTimePickerBirthDate
+            // 
+            this.dateTimePickerBirthDate.Location = new System.Drawing.Point(140, 195);
+            this.dateTimePickerBirthDate.Name = "dateTimePickerBirthDate";
+            this.dateTimePickerBirthDate.Size = new System.Drawing.Size(186, 20);
+            this.dateTimePickerBirthDate.TabIndex = 26;
+            // 
+            // listBoxErrors
+            // 
+            this.listBoxErrors.FormattingEnabled = true;
+            this.listBoxErrors.Location = new System.Drawing.Point(9, 233);
+            this.listBoxErrors.Name = "listBoxErrors";
+            this.listBoxErrors.Size = new System.Drawing.Size(327, 134);
+            this.listBoxErrors.TabIndex = 25;
             // 
             // lblDateOfBirth
             // 
             this.lblDateOfBirth.AutoSize = true;
-            this.lblDateOfBirth.Location = new System.Drawing.Point(38, 200);
+            this.lblDateOfBirth.Location = new System.Drawing.Point(40, 201);
             this.lblDateOfBirth.Name = "lblDateOfBirth";
             this.lblDateOfBirth.Size = new System.Drawing.Size(65, 13);
             this.lblDateOfBirth.TabIndex = 24;
             this.lblDateOfBirth.Text = "Date of birth";
             // 
-            // txtDateOfBirthUp
-            // 
-            this.txtDateOfBirthUp.Location = new System.Drawing.Point(112, 193);
-            this.txtDateOfBirthUp.Name = "txtDateOfBirthUp";
-            this.txtDateOfBirthUp.Size = new System.Drawing.Size(137, 20);
-            this.txtDateOfBirthUp.TabIndex = 23;
-            // 
             // txtPasswordUp
             // 
-            this.txtPasswordUp.Location = new System.Drawing.Point(113, 132);
+            this.txtPasswordUp.Location = new System.Drawing.Point(189, 133);
             this.txtPasswordUp.Name = "txtPasswordUp";
             this.txtPasswordUp.Size = new System.Drawing.Size(137, 20);
             this.txtPasswordUp.TabIndex = 20;
             // 
             // txtEmailUp1
             // 
-            this.txtEmailUp1.Location = new System.Drawing.Point(113, 162);
+            this.txtEmailUp1.Location = new System.Drawing.Point(189, 168);
             this.txtEmailUp1.Name = "txtEmailUp1";
             this.txtEmailUp1.Size = new System.Drawing.Size(137, 20);
             this.txtEmailUp1.TabIndex = 21;
             // 
             // txtUserNameUp
             // 
-            this.txtUserNameUp.Location = new System.Drawing.Point(113, 102);
+            this.txtUserNameUp.Location = new System.Drawing.Point(189, 99);
             this.txtUserNameUp.Name = "txtUserNameUp";
             this.txtUserNameUp.Size = new System.Drawing.Size(137, 20);
             this.txtUserNameUp.TabIndex = 19;
             // 
             // txtFirstNameUp
             // 
-            this.txtFirstNameUp.Location = new System.Drawing.Point(112, 37);
+            this.txtFirstNameUp.Location = new System.Drawing.Point(189, 33);
             this.txtFirstNameUp.Name = "txtFirstNameUp";
             this.txtFirstNameUp.Size = new System.Drawing.Size(137, 20);
             this.txtFirstNameUp.TabIndex = 17;
             // 
             // txtLastNameUp
             // 
-            this.txtLastNameUp.Location = new System.Drawing.Point(112, 70);
+            this.txtLastNameUp.Location = new System.Drawing.Point(189, 66);
             this.txtLastNameUp.Name = "txtLastNameUp";
             this.txtLastNameUp.Size = new System.Drawing.Size(137, 20);
             this.txtLastNameUp.TabIndex = 18;
@@ -220,7 +204,7 @@ namespace Noots
             // lblUserNameUp
             // 
             this.lblUserNameUp.AutoSize = true;
-            this.lblUserNameUp.Location = new System.Drawing.Point(35, 100);
+            this.lblUserNameUp.Location = new System.Drawing.Point(39, 106);
             this.lblUserNameUp.Name = "lblUserNameUp";
             this.lblUserNameUp.Size = new System.Drawing.Size(55, 13);
             this.lblUserNameUp.TabIndex = 16;
@@ -229,7 +213,7 @@ namespace Noots
             // lblPasswordUp
             // 
             this.lblPasswordUp.AutoSize = true;
-            this.lblPasswordUp.Location = new System.Drawing.Point(37, 131);
+            this.lblPasswordUp.Location = new System.Drawing.Point(39, 140);
             this.lblPasswordUp.Name = "lblPasswordUp";
             this.lblPasswordUp.Size = new System.Drawing.Size(53, 13);
             this.lblPasswordUp.TabIndex = 15;
@@ -238,7 +222,7 @@ namespace Noots
             // lblEmailUp
             // 
             this.lblEmailUp.AutoSize = true;
-            this.lblEmailUp.Location = new System.Drawing.Point(38, 165);
+            this.lblEmailUp.Location = new System.Drawing.Point(40, 171);
             this.lblEmailUp.Name = "lblEmailUp";
             this.lblEmailUp.Size = new System.Drawing.Size(32, 13);
             this.lblEmailUp.TabIndex = 14;
@@ -247,7 +231,7 @@ namespace Noots
             // lblFirstNameUp
             // 
             this.lblFirstNameUp.AutoSize = true;
-            this.lblFirstNameUp.Location = new System.Drawing.Point(36, 37);
+            this.lblFirstNameUp.Location = new System.Drawing.Point(40, 40);
             this.lblFirstNameUp.Name = "lblFirstNameUp";
             this.lblFirstNameUp.Size = new System.Drawing.Size(55, 13);
             this.lblFirstNameUp.TabIndex = 11;
@@ -256,7 +240,7 @@ namespace Noots
             // lblLastNameUp
             // 
             this.lblLastNameUp.AutoSize = true;
-            this.lblLastNameUp.Location = new System.Drawing.Point(37, 74);
+            this.lblLastNameUp.Location = new System.Drawing.Point(40, 73);
             this.lblLastNameUp.Name = "lblLastNameUp";
             this.lblLastNameUp.Size = new System.Drawing.Size(56, 13);
             this.lblLastNameUp.TabIndex = 10;
@@ -265,7 +249,7 @@ namespace Noots
             // lblSignUpUp
             // 
             this.lblSignUpUp.AutoSize = true;
-            this.lblSignUpUp.Location = new System.Drawing.Point(116, 9);
+            this.lblSignUpUp.Location = new System.Drawing.Point(155, 0);
             this.lblSignUpUp.Name = "lblSignUpUp";
             this.lblSignUpUp.Size = new System.Drawing.Size(43, 13);
             this.lblSignUpUp.TabIndex = 9;
@@ -273,7 +257,7 @@ namespace Noots
             // 
             // btnBackToSignInUp
             // 
-            this.btnBackToSignInUp.Location = new System.Drawing.Point(38, 273);
+            this.btnBackToSignInUp.Location = new System.Drawing.Point(3, 370);
             this.btnBackToSignInUp.Name = "btnBackToSignInUp";
             this.btnBackToSignInUp.Size = new System.Drawing.Size(86, 23);
             this.btnBackToSignInUp.TabIndex = 7;
@@ -283,7 +267,7 @@ namespace Noots
             // 
             // btnCreatAcountUp
             // 
-            this.btnCreatAcountUp.Location = new System.Drawing.Point(167, 273);
+            this.btnCreatAcountUp.Location = new System.Drawing.Point(258, 370);
             this.btnCreatAcountUp.Name = "btnCreatAcountUp";
             this.btnCreatAcountUp.Size = new System.Drawing.Size(83, 23);
             this.btnCreatAcountUp.TabIndex = 8;
@@ -291,9 +275,35 @@ namespace Noots
             this.btnCreatAcountUp.UseVisualStyleBackColor = true;
             this.btnCreatAcountUp.Click += new System.EventHandler(this.btnCreatAcountUp_Click_1);
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(-54, -19);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(137, 20);
+            this.textBox1.TabIndex = 23;
+            // 
+            // btncreateacountLI
+            // 
+            this.btncreateacountLI.Location = new System.Drawing.Point(258, 370);
+            this.btncreateacountLI.Name = "btncreateacountLI";
+            this.btncreateacountLI.Size = new System.Drawing.Size(85, 23);
+            this.btncreateacountLI.TabIndex = 12;
+            this.btncreateacountLI.Text = "Create acount";
+            this.btncreateacountLI.UseVisualStyleBackColor = true;
+            this.btncreateacountLI.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // lblSignInLI
+            // 
+            this.lblSignInLI.AutoSize = true;
+            this.lblSignInLI.Location = new System.Drawing.Point(155, 7);
+            this.lblSignInLI.Name = "lblSignInLI";
+            this.lblSignInLI.Size = new System.Drawing.Size(39, 13);
+            this.lblSignInLI.TabIndex = 10;
+            this.lblSignInLI.Text = "Sign in";
+            // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(281, 336);
+            this.ClientSize = new System.Drawing.Size(351, 403);
             this.Controls.Add(this.panelSignUp);
             this.Controls.Add(this.panelSignIn);
             this.Name = "Form1";
@@ -351,7 +361,8 @@ namespace Noots
         private System.Windows.Forms.Button btncreateacountLI;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label lblDateOfBirth;
-        private System.Windows.Forms.TextBox txtDateOfBirthUp;
+        private System.Windows.Forms.ListBox listBoxErrors;
+        private System.Windows.Forms.DateTimePicker dateTimePickerBirthDate;
     }
 }
 
