@@ -14,6 +14,8 @@ namespace Noots
 {
     public partial class Form1 : Form
     {
+        private string connectionString;
+
         public Form1()
         {
             InitializeComponent();
@@ -33,12 +35,11 @@ namespace Noots
                 MessageBox.Show("Please make sure all fields are properly initialized.");
                 return;
             };
-            string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
             string query = "SELECT [Id], [User Name], [Email] "
                 + "FROM [NOOTS].[dbo].[Users]  WHERE [User Name] = @UsernameLI AND [Password] = @PasswordLI";
             string UsernameLI = txtusernameLI.Text;
             string HashedPasswordLI = SecurityHelper.HashPassword(txtpasswordLI.Text.Trim());
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(Session.connectionString))
             {
                 try
                 {
@@ -124,6 +125,31 @@ namespace Noots
                 hasError = true;
             }
             //Username
+            string query = "SELECT COUNT(*) FROM Users WHERE [User Name] = @Username";
+            string Username = txtUserNameUp.Text;
+            using (SqlConnection connection2 = new SqlConnection(Session.connectionString))
+            {
+                try
+                {
+                    connection2.Open();
+                    using (SqlCommand command = new SqlCommand(query, connection2))
+                    {
+                        command.Parameters.AddWithValue("@Username", Username);
+
+                        int userCount = (int)command.ExecuteScalar();
+                        if (userCount > 0)
+                        {
+                            listBoxErrors.Items.Add("This username is already taken. Please choose another one.");
+                            hasError = true;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error checking username: " + ex.Message);
+                }
+            }
+
             if (txtUserNameUp == null)
             {
                 listBoxErrors.Items.Add("Username field cannot be empty.");
@@ -152,7 +178,7 @@ namespace Noots
             }
             if (!Regex.IsMatch(txtPasswordUp.Text, @"^[\x20-\x7E]+$"))
             {
-                listBoxErrors.Items.Add("Password can only contain English letters, numbers,  and standard \n keyboard characters.");
+                listBoxErrors.Items.Add("Password can only contain English letters, numbers,  and standard  keyboard characters.");
                 hasError = true;
             }
             if (!(txtPasswordUp.Text.Any(char.IsLower) && txtPasswordUp.Text.Any(char.IsUpper)))
@@ -198,8 +224,7 @@ namespace Noots
             }
             if (!hasError)
             {
-                string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-                string query = "INSERT INTO Users([User Name],[First Name],[Last Name],[Email],[Password],[Date Of Birth]) VALUES (@UserName,@FirstName,@LastName,@Email,@Password,@DateOfBirth);";
+                string query2 = "INSERT INTO Users([User Name],[First Name],[Last Name],[Email],[Password],[Date Of Birth]) VALUES (@UserName,@FirstName,@LastName,@Email,@Password,@DateOfBirth);";
                 string UserNameUp = txtUserNameUp.Text;
                 string FirstNameUp = txtFirstNameUp.Text;
                 string LastNameUp = txtLastNameUp.Text;
@@ -208,12 +233,12 @@ namespace Noots
                 DateTime selectedDate = dateTimePickerBirthDate.Value;
                 string DateOfBirthUp = selectedDate.ToString("yyyy-MM-dd");
 
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(Session.connectionString))
                 {
                     try
                     {
                         connection.Open();
-                        using (SqlCommand command = new SqlCommand(query, connection))
+                        using (SqlCommand command = new SqlCommand(query2, connection))
                         {
                             command.Parameters.AddWithValue("@UserName", UserNameUp);
                             command.Parameters.AddWithValue("@FirstName", FirstNameUp);
@@ -256,6 +281,11 @@ namespace Noots
             panelSignIn.SendToBack();
             panelSignUp.Visible = true;
             panelSignIn.Visible = false;
+        }
+
+        private void panelSignIn_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

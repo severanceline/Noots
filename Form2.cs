@@ -22,6 +22,7 @@ namespace Noots
         private Button btnAddImage;
         private Button btnAddFile;
         private TextBox txtUserInput;
+        private Button BtnSelectImage;
 
         public Form2()
         {
@@ -40,8 +41,7 @@ namespace Noots
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(Session.connectionString))
             {
                 try
                 {
@@ -102,7 +102,32 @@ namespace Noots
 
         private void BtnAddImage_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Button BtnSelectImage = new Button();
+            BtnSelectImage.Location = new Point(btnAddImage.Location.X + btnAddImage.Width + 10 , btnAddImage.Location.Y);
+            BtnSelectImage.Size = new Size(100, 30);
+            BtnSelectImage.Text = "Select from files";
+            BtnSelectImage.Click += BtnSelectImage_Click;
+            this.Controls.Add(BtnSelectImage);
+
+        }
+
+        private void BtnSelectImage_Click(object sender, EventArgs e)
+        {
+            PictureBox pictureBox1 = new PictureBox();
+            pictureBox1.Location = new Point(BtnSelectImage.Location.X + BtnSelectImage.Width + 10, BtnSelectImage.Location.Y);
+            pictureBox1.Size = new Size(500, 300);
+            this.Controls.Add(pictureBox1);
+            pictureBox1.Visible = false;
+
+            OpenFileDialog ofd = new OpenFileDialog(); 
+            ofd.Title = "Select an image"; 
+            ofd.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp"; 
+
+            if (ofd.ShowDialog() == DialogResult.OK) 
+            {
+                pictureBox1.Visible = true;
+                pictureBox1.Image = Image.FromFile(ofd.FileName);
+            }
         }
 
         private void BtnAdd_Click(object sender, EventArgs e)
@@ -112,10 +137,9 @@ namespace Noots
                 MessageBox.Show("Please enter some text.");
                 return;
             }
-            string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
             string query = "INSERT INTO [Datas] ([UserId],[DataCategory],[TextContent]) "
             + "VALUES ( @userId , 1 , @TextContent )";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(Session.connectionString))
             {
                 try
                 {
