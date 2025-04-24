@@ -35,7 +35,7 @@ namespace Noots
                 MessageBox.Show("Please make sure all fields are properly initialized.");
                 return;
             };
-            string query = "SELECT [Id], [User Name], [Email] "
+            string query = "SELECT [Id], [User Name],[First Name],[Last Name],[Email],[Password],[Date Of Birth],[Date Of Sign Up] "
                 + "FROM [NOOTS].[dbo].[Users]  WHERE [User Name] = @UsernameLI AND [Password] = @PasswordLI";
             string UsernameLI = txtusernameLI.Text;
             string HashedPasswordLI = SecurityHelper.HashPassword(txtpasswordLI.Text.Trim());
@@ -55,9 +55,14 @@ namespace Noots
                             {
                                 Session.CurrentUser.userId = reader.GetGuid(0);
                                 Session.CurrentUser.UserName = reader.GetString(1);
-                                Session.CurrentUser.Email = reader.GetString(2);
+                                Session.CurrentUser.Firstname = reader.GetString(2);
+                                Session.CurrentUser.Lastname = reader.GetString(3);
+                                Session.CurrentUser.Email = reader.GetString(4);
+                                Session.CurrentUser.Password = reader.GetString(5);
+                                Session.CurrentUser.Dateofbirth = reader.GetDateTime(6);
+                                Session.CurrentUser.Dateofsignup = reader.GetDateTime(7);
                                 this.Hide();
-                                MessageBox.Show("Logged in successfully");
+                                MessageBox.Show($"Welcome, {Session.CurrentUser.Firstname} {Session.CurrentUser.Lastname}!");
                             }
                             else
                             {
